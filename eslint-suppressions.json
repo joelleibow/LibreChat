@@ -161,7 +161,7 @@
   },
   "client/src/components/Chat/AddMultiConvo.tsx": {
     "shadcn/no-restyle": {
-      "count": 10
+      "count": 11
     }
   },
   "client/src/components/Chat/ChatView.tsx": {
@@ -420,12 +420,12 @@
   },
   "client/src/components/Chat/Menus/HeaderMenu.tsx": {
     "shadcn/no-restyle": {
-      "count": 3
+      "count": 4
     }
   },
   "client/src/components/Chat/Menus/NewChat.tsx": {
     "shadcn/no-restyle": {
-      "count": 3
+      "count": 4
     }
   },
   "client/src/components/Chat/Menus/Presets/EditPresetDialog.tsx": {
@@ -963,9 +963,14 @@
       "count": 9
     }
   },
+  "client/src/components/Chat/TemporaryChat.tsx": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
   "client/src/components/Chat/Trace/Button.tsx": {
     "shadcn/no-restyle": {
-      "count": 3
+      "count": 4
     }
   },
   "client/src/components/Chat/Trace/Inspector.tsx": {
@@ -1022,7 +1027,7 @@
       "count": 1
     },
     "shadcn/no-restyle": {
-      "count": 1
+      "count": 2
     }
   },
   "client/src/components/Conversations/ConvoActions.tsx": {
@@ -1279,7 +1284,7 @@
   },
   "client/src/components/Input/Generations/Regenerate.tsx": {
     "shadcn/no-restyle": {
-      "count": 1
+      "count": 2
     }
   },
   "client/src/components/Input/Generations/Stop.tsx": {
@@ -1340,7 +1345,7 @@
   },
   "client/src/components/MCP/StackedMCPIcons.tsx": {
     "shadcn/no-restyle": {
-      "count": 4
+      "count": 5
     },
     "shadcn/require-static-classes": {
       "count": 3
@@ -1399,6 +1404,11 @@
     },
     "shadcn/no-unknown-classes": {
       "count": 2
+    }
+  },
+  "client/src/components/Nav/AgentMarketplaceButton.tsx": {
+    "shadcn/no-restyle": {
+      "count": 1
     }
   },
   "client/src/components/Nav/ExportConversation/ExportModal.tsx": {
@@ -1774,14 +1784,6 @@
       "count": 2
     }
   },
-  "client/src/components/Sharing/PeoplePicker/SearchPicker.tsx": {
-    "shadcn/no-restyle": {
-      "count": 3
-    },
-    "shadcn/require-static-classes": {
-      "count": 1
-    }
-  },
   "client/src/components/Sharing/PeoplePicker/SelectedPrincipalsList.tsx": {
     "shadcn/no-restyle": {
       "count": 4
@@ -1827,12 +1829,12 @@
   },
   "client/src/components/SidePanel/Agents/Advanced/AdvancedPanel.tsx": {
     "shadcn/no-restyle": {
-      "count": 19
+      "count": 20
     }
   },
   "client/src/components/SidePanel/Agents/Advanced/AgentHandoffs.tsx": {
     "shadcn/no-restyle": {
-      "count": 11
+      "count": 12
     }
   },
   "client/src/components/SidePanel/Agents/Advanced/AgentList.tsx": {
@@ -1840,7 +1842,7 @@
       "count": 1
     },
     "shadcn/no-restyle": {
-      "count": 11
+      "count": 12
     }
   },
   "client/src/components/SidePanel/Agents/Advanced/MaxAgentSteps.tsx": {
@@ -1853,7 +1855,7 @@
       "count": 3
     },
     "shadcn/no-restyle": {
-      "count": 9
+      "count": 10
     }
   },
   "client/src/components/SidePanel/Agents/AgentConfig.tsx": {
@@ -1872,6 +1874,11 @@
       "count": 4
     }
   },
+  "client/src/components/SidePanel/Agents/AgentPanelSkeleton.tsx": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
   "client/src/components/SidePanel/Agents/AgentSelect.tsx": {
     "shadcn/no-restyle": {
       "count": 5
@@ -1885,7 +1892,7 @@
       "count": 2
     },
     "shadcn/no-restyle": {
-      "count": 9
+      "count": 10
     }
   },
   "client/src/components/SidePanel/Agents/Background.tsx": {
@@ -1958,7 +1965,7 @@
       "count": 2
     },
     "shadcn/no-restyle": {
-      "count": 15
+      "count": 16
     }
   },
   "client/src/components/SidePanel/Agents/OptionToggle.tsx": {
@@ -2068,12 +2075,12 @@
       "count": 2
     },
     "shadcn/no-restyle": {
-      "count": 11
+      "count": 12
     }
   },
   "client/src/components/SidePanel/Agents/Version/VersionPanel.tsx": {
     "shadcn/no-restyle": {
-      "count": 2
+      "count": 3
     }
   },
   "client/src/components/SidePanel/ArtifactsPanel.tsx": {
@@ -2138,7 +2145,7 @@
       "count": 15
     },
     "shadcn/no-restyle": {
-      "count": 19
+      "count": 20
     }
   },
   "client/src/components/SidePanel/Builder/AssistantTool.tsx": {
@@ -2456,7 +2463,12 @@
       "count": 1
     },
     "shadcn/no-restyle": {
-      "count": 4
+      "count": 5
+    }
+  },
+  "client/src/components/UnifiedSidebar/mobile/Header.tsx": {
+    "shadcn/no-restyle": {
+      "count": 1
     }
   },
   "client/src/components/UnifiedSidebar/mobile/Scrim.tsx": {
