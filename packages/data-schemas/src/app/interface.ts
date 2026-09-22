@@ -48,6 +48,9 @@ export async function loadDefaultInterface({
     currency: interfaceConfig?.currency ?? defaults.currency,
     steerArmConfirmationTimeoutMs:
       interfaceConfig?.steerArmConfirmationTimeoutMs ?? defaults.steerArmConfirmationTimeoutMs,
+    queuedTurnReconciliationTimeoutMs:
+      interfaceConfig?.queuedTurnReconciliationTimeoutMs ??
+      defaults.queuedTurnReconciliationTimeoutMs,
 
     // Permissions and related settings - only include if explicitly configured
     bookmarks: interfaceConfig?.bookmarks,
