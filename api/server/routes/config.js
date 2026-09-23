@@ -17,6 +17,7 @@ const {
   resolveCodeEnvironmentDecisionVersion,
   resolveCodeEnvironmentMoveVersion,
   isPasskeyEnabled,
+  resolveMaxPasskeysPerUser,
 } = require('@librechat/api');
 const { EModelEndpoint, defaultSocialLogins } = require('librechat-data-provider');
 const { logger, getTenantId, SystemCapabilities } = require('@librechat/data-schemas');
@@ -153,6 +154,7 @@ function buildPostLoginPayload(appConfig) {
       process.env.ALLOW_ACCOUNT_DELETION === undefined ||
       isEnabled(process.env.ALLOW_ACCOUNT_DELETION),
     allowEmailChange: resolveEmailChangeSettings(appConfig?.emailChange).enabled,
+    maxPasskeysPerUser: resolveMaxPasskeysPerUser(appConfig?.passkeys),
   };
 
   return payload;
