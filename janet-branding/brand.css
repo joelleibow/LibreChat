@@ -318,12 +318,15 @@ html.dark .focus\:outline-none:focus {
  * hsl(), not rgb(), and its space flips between this build (HSL) and upstream
  * main (RGB) — so any single override is invalid in one of them, which is what
  * made the off track transparent and the white thumb invisible. Paint it from
- * the selector instead; the value is the system's --switch-track-off. */
+ * the selector instead. The fill is the system's --border-strong rather than
+ * its --switch-track-off (#C6D0CA): that tint is drawn to sit on Mist and reads
+ * at roughly 1.5:1 against a near-white card, which is why the off switches were
+ * hard to discern. An off state has to be legible on its own. */
 html .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
-  background-color: #c6d0ca;
+  background-color: #a2ada7;
 }
 html.dark .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
-  background-color: #414b44;
+  background-color: #4c564f;
 }
 
 /* iOS reports vh against the large viewport, so a fixed, centred sheet sized in
