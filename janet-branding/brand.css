@@ -329,6 +329,18 @@ html.dark .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'
   background-color: #4c564f;
 }
 
+/* Sliders. Radix's track uses the shadcn `bg-secondary`, a near-white grey that
+ * disappears on the panel for the same reason the off switch did, so the
+ * unfilled range takes the same strong border tone. Scoped by Radix's own
+ * `data-orientation` attribute, which the track and range carry and nothing
+ * else in the app does, so other consumers of `bg-secondary` are untouched. */
+html [data-orientation].bg-secondary {
+  background-color: #a2ada7;
+}
+html.dark [data-orientation].bg-secondary {
+  background-color: #4c564f;
+}
+
 /* iOS reports vh against the large viewport, so a fixed, centred sheet sized in
  * vh hangs its bottom edge under the browser toolbar and the last rows of a
  * scrollable panel cannot be reached. dvh tracks the visible viewport. */
