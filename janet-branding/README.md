@@ -32,12 +32,15 @@ touched, so `git rebase`/`git merge` against upstream is always clean.
 
 On the `LibreChat` service (`srv-d7gho8u7r5hc73bad06g`):
 
-- **Docker Command**: `sh -c "node janet-branding/apply.mjs && exec npm run backend"`
-- **Environment**: `APP_TITLE=Janet`, `CUSTOM_FOOTER=…`
+- **Docker Command**: `node janet-branding/apply.mjs`
+- **Environment**: `JANET_BRANDING_SERVE=true`, `APP_TITLE=Janet`, `CUSTOM_FOOTER=…`
 - **Branch**: the branch that carries this directory.
 
-The `exec` matters: it makes `npm run backend` PID 1 so Render's SIGTERM reaches
-it. Without it the shell swallows the signal.
+The command is a single token on purpose. Render runs the Docker Command through
+`sh -c`, and nesting another `/bin/sh -c "…"` inside it gets mangled into a
+lookup for a file whose name is the whole string. With `JANET_BRANDING_SERVE`
+set, `apply.mjs` starts `api/server/index.js` itself, forwards SIGTERM/SIGINT to
+it, and exits with its code — so there is no shell in the path at all.
 
 ## Updating the brand
 

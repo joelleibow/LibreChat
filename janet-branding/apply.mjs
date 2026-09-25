@@ -17,6 +17,7 @@
  * chat from starting.
  */
 import { brotliCompressSync, gzipSync } from 'node:zlib';
+import { spawn } from 'node:child_process';
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -135,10 +136,36 @@ function main() {
   console.log(`[janet-branding] applied to ${dist} (${copied} assets)`);
 }
 
+/**
+ * Render's Docker Command is run through `sh -c`, and nesting another
+ * `/bin/sh -c "…"` inside it gets mangled, so the command is a single token:
+ * `node janet-branding/apply.mjs`. With JANET_BRANDING_SERVE set, this process
+ * becomes the server's parent and hands the backend its own PID-1 lifecycle.
+ */
+function serve() {
+  const child = spawn(process.execPath, ['api/server/index.js'], {
+    stdio: 'inherit',
+    env: { ...process.env, NODE_ENV: 'production' },
+  });
+  for (const signal of ['SIGTERM', 'SIGINT']) {
+    process.on(signal, () => child.kill(signal));
+  }
+  child.on('exit', (code, signal) => process.exit(code ?? (signal ? 0 : 1)));
+  child.on('error', (error) => {
+    console.error(`[janet-branding] could not start the backend: ${error.message}`);
+    process.exit(1);
+  });
+}
+
 try {
   main();
 } catch (error) {
   // Never take the chat down for a cosmetic failure.
   console.error(`[janet-branding] failed: ${error?.stack ?? error}`);
 }
-process.exit(0);
+
+if (process.env.JANET_BRANDING_SERVE) {
+  serve();
+} else {
+  process.exit(0);
+}
