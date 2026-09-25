@@ -65,7 +65,6 @@ html {
   --surface-fixed: 253 254 253;
   --surface-fixed-hover: 233 237 234;
   --text-fixed: 31 38 34;
-  --switch-unchecked: 198 208 202;
 
   /* Borders do the work shadows usually do */
   --border-light: 213 221 216; /* border-subtle */
@@ -176,7 +175,6 @@ html.dark {
   --surface-inverted: 233 237 234;
   --surface-inverted-hover: 246 248 246;
   --text-inverted: 0 43 24;
-  --switch-unchecked: 65 75 68;
 
   --border-light: 47 55 50;
   --border-medium: 76 86 79;
@@ -314,6 +312,28 @@ html.dark .peer:focus ~ .dark\:peer-focus\:text-green-500 {
 html.dark .focus\:outline-none:focus {
   outline: 3px solid #1e2c24;
   outline-offset: 1px;
+}
+
+/* Switch tracks. `--switch-unchecked` is the one token LibreChat wraps in
+ * hsl(), not rgb(), and its space flips between this build (HSL) and upstream
+ * main (RGB) — so any single override is invalid in one of them, which is what
+ * made the off track transparent and the white thumb invisible. Paint it from
+ * the selector instead; the value is the system's --switch-track-off. */
+html .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
+  background-color: #c6d0ca;
+}
+html.dark .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
+  background-color: #414b44;
+}
+
+/* iOS reports vh against the large viewport, so a fixed, centred sheet sized in
+ * vh hangs its bottom edge under the browser toolbar and the last rows of a
+ * scrollable panel cannot be reached. dvh tracks the visible viewport. */
+html .fixed.inset-0.flex.items-center {
+  height: 100dvh;
+}
+html .max-h-\[85vh\] {
+  max-height: 85dvh;
 }
 
 /* Actions. LibreChat paints its primary actions in a hardcoded green-500
