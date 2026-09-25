@@ -1,0 +1,371 @@
+/*
+ * Forest & Brass for Janet — LibreChat branding overlay.
+ *
+ * Loaded at container start by janet-branding/apply.mjs, which appends a
+ * <link rel="stylesheet" href="janet-brand.css"> to the built index.html.
+ * It remaps LibreChat's own CSS custom properties onto Forest & Brass tokens,
+ * so nothing in the vendor source is edited and an upstream sync never
+ * conflicts.
+ *
+ * The values are LibreChat's "R G B" channel triplets, not hex — that is what
+ * its Tailwind colour map (`rgb(var(--x) / <alpha-value>)`) requires.
+ * Light lives on `html`; dark on `html.dark` (LibreChat toggles `.dark` on the
+ * document element). Source of truth: preferred-design-system/tokens/colors.css.
+ */
+
+/* ── Light ─────────────────────────────────────────────────────────────── */
+html {
+  /* Text · Mist ink */
+  --text-primary: 31 38 34; /* mist-400 */
+  --text-secondary: 57 66 61; /* mist-300 */
+  --text-secondary-alt: 117 128 122; /* mist-200 */
+  --text-tertiary: 117 128 122;
+  --text-muted: 117 128 122;
+  --text-warning: 168 101 10; /* warning-300 */
+  --text-destructive: 163 34 23; /* danger-300 */
+
+  /* Links and actions · Forest leads */
+  --link: 0 66 37; /* forest-300 */
+  --link-hover: 0 43 24; /* forest-400 */
+  --link-visited: 95 75 115; /* plum */
+  --accent-primary: 0 66 37;
+  --accent-primary-hover: 0 43 24;
+  --ring-primary: 0 66 37;
+  --brand-purple: 95 75 115;
+
+  /* Header */
+  --header-primary: 253 254 253; /* surface-card */
+  --header-hover: 246 248 246;
+  --header-button-hover: 246 248 246;
+
+  /* Surfaces · Mist */
+  --surface-primary: 233 237 234; /* mist-100 page */
+  --surface-chat: 233 237 234;
+  --surface-primary-alt: 246 248 246;
+  --surface-primary-contrast: 220 228 223;
+  --surface-secondary: 246 248 246;
+  --surface-secondary-alt: 220 228 223;
+  --surface-tertiary: 253 254 253;
+  --surface-tertiary-alt: 246 248 246;
+  --surface-dialog: 253 254 253;
+  --surface-code: 246 248 246;
+  --surface-active: 220 238 228; /* forest-50 selected */
+  --surface-active-alt: 220 228 223;
+  --surface-hover: 220 228 223;
+  --surface-hover-alt: 213 221 216;
+  --surface-composer-hover: 220 228 223;
+  --surface-overlay: 31 38 34; /* modal scrim base (the one transparency) */
+  --surface-submit: 0 66 37;
+  --surface-submit-hover: 0 43 24;
+  --surface-destructive: 163 34 23;
+  --surface-destructive-hover: 110 20 12;
+  --surface-inverted: 0 66 37;
+  --surface-inverted-hover: 0 43 24;
+  --text-inverted: 233 237 234;
+  --surface-fixed: 253 254 253;
+  --surface-fixed-hover: 233 237 234;
+  --text-fixed: 31 38 34;
+
+  /* Borders do the work shadows usually do */
+  --border-light: 213 221 216; /* border-subtle */
+  --border-medium: 162 173 167; /* border-strong */
+  --border-medium-alt: 162 173 167;
+  --border-heavy: 117 128 122;
+  --border-xheavy: 57 66 61;
+  --border-destructive: 163 34 23;
+
+  /* Status · functional only */
+  --status-success: 18 122 64;
+  --status-success-subtle: 217 243 224;
+  --status-success-border: 63 181 109;
+  --status-success-strong: 18 122 64;
+  --status-info: 62 107 140; /* slate-blue */
+  --status-info-subtle: 233 237 234;
+  --status-info-border: 127 163 194;
+  --status-info-strong: 62 107 140;
+  --status-warning: 168 101 10;
+  --status-warning-subtle: 252 232 204;
+  --status-warning-border: 227 154 46;
+  --status-warning-strong: 168 101 10;
+  --status-error: 163 34 23;
+  --status-error-subtle: 251 220 216;
+  --status-error-border: 222 90 77;
+  --status-error-strong: 163 34 23;
+  --status-neutral: 117 128 122;
+  --status-neutral-subtle: 246 248 246;
+  --status-neutral-border: 213 221 216;
+  --status-verified: 18 122 64;
+  --text-on-status: 233 237 234; /* mist-100 on any strong surface */
+
+  /* Code syntax · derived hues only */
+  --syntax-text: 31 38 34;
+  --syntax-comment: 117 128 122;
+  --syntax-meta: 117 128 122;
+  --syntax-builtin: 168 101 10;
+  --syntax-keyword: 62 107 140;
+  --syntax-string: 46 125 110;
+  --syntax-attr: 95 75 115;
+  --syntax-title: 163 34 23;
+
+  /* Categorical series (charts) */
+  --series-1: 62 107 140;
+  --series-2: 201 162 75;
+  --series-3: 46 125 110;
+  --series-4: 168 101 10;
+  --series-5: 122 46 46;
+  --series-6: 95 75 115;
+  --series-7: 18 122 64;
+  --series-8: 117 128 122;
+
+  /* Shape and motion */
+  --radius: 0.5rem;
+  --theme-control-radius: 0.5rem;
+  --theme-round-control-radius: 9999px;
+  --theme-surface-radius: 0.75rem;
+  --theme-large-surface-radius: 0.75rem;
+  --theme-control-height: 2.25rem;
+  --theme-motion-fast: 120ms;
+  --theme-motion-normal: 200ms;
+  --theme-elevation-surface: 0 1px 2px rgb(31 38 34 / 0.04), 0 2px 8px rgb(31 38 34 / 0.06);
+  --theme-font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Dark ──────────────────────────────────────────────────────────────── */
+html.dark {
+  --text-primary: 237 241 238;
+  --text-secondary: 169 178 172;
+  --text-secondary-alt: 138 148 141;
+  --text-tertiary: 138 148 141;
+  --text-muted: 138 148 141;
+  --text-warning: 246 200 127;
+  --text-destructive: 242 166 158;
+
+  --link: 169 211 189; /* forest-100 */
+  --link-hover: 220 238 228;
+  --link-visited: 156 134 179;
+  --accent-primary: 169 211 189;
+  --accent-primary-hover: 220 238 228;
+  --ring-primary: 169 211 189;
+  --brand-purple: 156 134 179;
+
+  --header-primary: 25 30 27;
+  --header-hover: 32 38 34;
+  --header-button-hover: 32 38 34;
+
+  --surface-primary: 19 23 20; /* #131714 */
+  --surface-chat: 19 23 20;
+  --surface-primary-alt: 25 30 27;
+  --surface-primary-contrast: 32 38 34;
+  --surface-secondary: 25 30 27;
+  --surface-secondary-alt: 32 38 34;
+  --surface-tertiary: 32 38 34;
+  --surface-tertiary-alt: 32 38 34;
+  --surface-dialog: 25 30 27;
+  --surface-code: 25 30 27;
+  --surface-active: 30 44 36;
+  --surface-active-alt: 42 50 45;
+  --surface-hover: 42 50 45;
+  --surface-hover-alt: 47 55 50;
+  --surface-composer-hover: 42 50 45;
+  --surface-overlay: 0 0 0;
+  --surface-submit: 0 66 37;
+  --surface-submit-hover: 0 43 24;
+  --surface-destructive: 163 34 23;
+  --surface-destructive-hover: 110 20 12;
+  --surface-inverted: 233 237 234;
+  --surface-inverted-hover: 246 248 246;
+  --text-inverted: 0 43 24;
+
+  --border-light: 47 55 50;
+  --border-medium: 76 86 79;
+  --border-medium-alt: 76 86 79;
+  --border-heavy: 110 120 113;
+  --border-xheavy: 138 148 141;
+  --border-destructive: 242 166 158;
+
+  --status-success: 156 224 180;
+  --status-success-subtle: 20 37 28;
+  --status-success-border: 39 64 52;
+  --status-success-strong: 18 122 64;
+  --status-info: 127 163 194;
+  --status-info-subtle: 25 30 27;
+  --status-info-border: 62 107 140;
+  --status-info-strong: 62 107 140;
+  --status-warning: 246 200 127;
+  --status-warning-subtle: 53 44 24;
+  --status-warning-border: 78 64 34;
+  --status-warning-strong: 168 101 10;
+  --status-error: 242 166 158;
+  --status-error-subtle: 53 30 28;
+  --status-error-border: 90 46 42;
+  --status-error-strong: 163 34 23;
+  --status-neutral: 169 178 172;
+  --status-neutral-subtle: 25 30 27;
+  --status-neutral-border: 47 55 50;
+  --status-verified: 63 181 109;
+  --text-on-status: 233 237 234;
+
+  --syntax-text: 237 241 238;
+  --syntax-comment: 138 148 141;
+  --syntax-meta: 169 178 172;
+  --syntax-builtin: 246 200 127;
+  --syntax-keyword: 127 163 194;
+  --syntax-string: 95 168 152;
+  --syntax-attr: 156 134 179;
+  --syntax-title: 242 166 158;
+
+  --series-1: 127 163 194;
+  --series-2: 227 203 139;
+  --series-3: 95 168 152;
+  --series-4: 246 200 127;
+  --series-5: 217 163 163;
+  --series-6: 156 134 179;
+  --series-7: 156 224 180;
+  --series-8: 169 178 172;
+}
+
+/* ── Type ──────────────────────────────────────────────────────────────
+ * Instrument Sans for body and UI, JetBrains Mono for code, Cormorant
+ * Garamond for display at 28px and up (`.text-3xl` is 30px) — and nowhere
+ * else. Sentence case, no emoji, no exclamation marks: those are copy rules
+ * that ride in the operator strings, not here.
+ */
+html,
+html body {
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+html .font-sans {
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+html pre,
+html code,
+html kbd,
+html samp,
+html .font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+html .text-3xl,
+html .text-4xl,
+html .text-5xl,
+html .text-6xl,
+html .text-7xl {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ── Chrome details ────────────────────────────────────────────────────
+ * The design system's selected state is the Forest tint; LibreChat paints
+ * active menu rows with its own accent. Pin the two places the brand reads
+ * most clearly on a chat surface.
+ */
+html ::selection {
+  background: rgb(201 162 75 / 0.32);
+}
+html.dark ::selection {
+  background: rgb(201 162 75 / 0.36);
+}
+
+/* WebKit input painting. LibreChat fills inputs with an inset box-shadow in a
+ * hardcoded colour (#fff light, #0d0d0d dark) so platform autofill cannot
+ * force its own scheme. Recolour it to the page surface, which is what the
+ * floating label's `bg-surface-primary` chip assumes it is, and keep the ink
+ * readable on it in dark. */
+.webkit-dark-styles,
+.webkit-dark-styles:focus {
+  -webkit-box-shadow: inset 0 0 0 50vh #e9edea;
+}
+.dark .webkit-dark-styles,
+.dark .webkit-dark-styles:focus {
+  -webkit-text-fill-color: #edf1ee;
+  -webkit-box-shadow: inset 0 0 0 50vh #131714;
+}
+
+/* Focus. LibreChat accents focus with its own teal — #10a37f on the field
+ * border, #126e6b on the floating label — which sits beside Forest as a second
+ * green. The system's focus is a Forest border plus a 3px forest-50 ring, and
+ * the label takes the same ink. Dark rises to forest-100 so the border reads on
+ * #131714. These selectors are Escaped Tailwind classes, so they carry one more
+ * type selector than the vendor rule and win without `!important`. */
+html .focus\:border-green-500:focus,
+html .focus-visible\:border-green-500:focus-visible {
+  border-color: #004225;
+}
+html .peer:focus ~ .peer-focus\:text-green-500,
+html .peer:focus ~ .peer-focus\:text-green-600 {
+  color: #004225;
+}
+html .focus\:outline-none:focus {
+  outline: 3px solid #dceee4;
+  outline-offset: 1px;
+}
+
+html.dark .focus\:border-green-500:focus,
+html.dark .focus-visible\:border-green-500:focus-visible {
+  border-color: #a9d3bd;
+}
+html.dark .peer:focus ~ .peer-focus\:text-green-500,
+html.dark .peer:focus ~ .peer-focus\:text-green-600,
+html.dark .peer:focus ~ .dark\:peer-focus\:text-green-500 {
+  color: #a9d3bd;
+}
+html.dark .focus\:outline-none:focus {
+  outline: 3px solid #1e2c24;
+  outline-offset: 1px;
+}
+
+/* Switch tracks. `--switch-unchecked` is the one token LibreChat wraps in
+ * hsl(), not rgb(), and its space flips between this build (HSL) and upstream
+ * main (RGB) — so any single override is invalid in one of them, which is what
+ * made the off track transparent and the white thumb invisible. Paint it from
+ * the selector instead. The fill is the system's --border-strong rather than
+ * its --switch-track-off (#C6D0CA): that tint is drawn to sit on Mist and reads
+ * at roughly 1.5:1 against a near-white card, which is why the off switches were
+ * hard to discern. An off state has to be legible on its own. */
+html .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
+  background-color: #a2ada7;
+}
+html.dark .data-\[state\=unchecked\]\:bg-switch-unchecked[data-state='unchecked'] {
+  background-color: #4c564f;
+}
+
+/* Sliders. Radix's track uses the shadcn `bg-secondary`, a near-white grey that
+ * disappears on the panel for the same reason the off switch did, so the
+ * unfilled range takes the same strong border tone. Scoped by Radix's own
+ * `data-orientation` attribute, which the track and range carry and nothing
+ * else in the app does, so other consumers of `bg-secondary` are untouched. */
+html [data-orientation].bg-secondary {
+  background-color: #a2ada7;
+}
+html.dark [data-orientation].bg-secondary {
+  background-color: #4c564f;
+}
+
+/* iOS reports vh against the large viewport, so a fixed, centred sheet sized in
+ * vh hangs its bottom edge under the browser toolbar and the last rows of a
+ * scrollable panel cannot be reached. dvh tracks the visible viewport. */
+html .fixed.inset-0.flex.items-center {
+  height: 100dvh;
+}
+html .max-h-\[85vh\] {
+  max-height: 85dvh;
+}
+
+/* Actions. LibreChat paints its primary actions in a hardcoded green-500
+ * (#10a37f) — the same teal as the focus accent — in the shared .btn-primary
+ * class and in per-component `bg-green-500` selections such as the Save As
+ * Preset button. The system's action colour is Forest, so the solid greens map
+ * to it and hover darkens to Forest-400 the way the system's solid controls
+ * do. Translucent green tints are left alone. */
+html .bg-green-500,
+html .hover\:bg-green-500:hover,
+html .focus\:bg-green-500:focus,
+html .btn-primary,
+html .btn-primary:disabled:hover {
+  background-color: #004225;
+}
+html .hover\:bg-green-600:hover,
+html .btn-primary:hover,
+html.dark .dark\:hover\:bg-green-600:hover {
+  background-color: #002b18;
+}
