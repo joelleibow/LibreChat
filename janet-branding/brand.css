@@ -267,3 +267,18 @@ html ::selection {
 html.dark ::selection {
   background: rgb(201 162 75 / 0.36);
 }
+
+/* WebKit input painting. LibreChat fills inputs with an inset box-shadow in a
+ * hardcoded colour (#fff light, #0d0d0d dark) so platform autofill cannot
+ * force its own scheme. Recolour it to the page surface, which is what the
+ * floating label's `bg-surface-primary` chip assumes it is, and keep the ink
+ * readable on it in dark. */
+.webkit-dark-styles,
+.webkit-dark-styles:focus {
+  -webkit-box-shadow: inset 0 0 0 50vh #e9edea;
+}
+.dark .webkit-dark-styles,
+.dark .webkit-dark-styles:focus {
+  -webkit-text-fill-color: #edf1ee;
+  -webkit-box-shadow: inset 0 0 0 50vh #131714;
+}

@@ -28,6 +28,23 @@ rewrites the _built output_ in place:
 Nothing under `src/`, `client/src/`, `api/` or the vendor `Dockerfile` is
 touched, so `git rebase`/`git merge` against upstream is always clean.
 
+### Two token formats, one stylesheet
+
+LibreChat changed its colour tokens between the pinned release and `main`, and
+`brand.css` has to match whichever build it lands on:
+
+- **Upstream `main`** holds bare `R G B` triplets and wraps them as
+  `rgb(var(--x) / <alpha-value>)`.
+- **The pinned v0.8.7** holds hex values and its utilities read `var(--x)`
+  directly.
+
+A triplet is invalid to the second and a hex is invalid to the first, so
+`brand.css` is authored once as triplets and `apply.mjs` rewrites it to hex when
+the built CSS it finds is the older shape. Detecting this wrong is not subtle:
+on v0.8.7 a triplet-valued override makes every `bg-surface-*`, `text-text-*`
+and `border-*` utility invalid, which means transparent buttons and black text
+in dark mode.
+
 ## Render wiring (operator config, not repo)
 
 On the `LibreChat` service (`srv-d7gho8u7r5hc73bad06g`):

@@ -18,7 +18,7 @@
  */
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 import { spawn } from 'node:child_process';
-import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -70,13 +70,49 @@ function copyAssets(dist) {
     copyFileSync(from, to);
     copied += 1;
   }
-  const css = join(HERE, 'brand.css');
-  if (existsSync(css)) {
-    copyFileSync(css, join(dist, 'janet-brand.css'));
-  } else {
-    console.warn('[janet-branding] brand.css missing');
-  }
   return copied;
+}
+
+/** A custom-property declaration whose whole value is a bare `R G B` triplet. */
+const TRIPLET = /(--[A-Za-z0-9-]+:\s*)(\d{1,3})\s+(\d{1,3})\s+(\d{1,3})(\s*;)/g;
+const hex2 = (channel) => Number(channel).toString(16).padStart(2, '0');
+
+/**
+ * Which token format the built client expects. Upstream main holds bare
+ * `R G B` triplets and wraps them as `rgb(var(--x) / <alpha-value>)`; the
+ * pinned v0.8.7 release holds hex values and reads `var(--x)` directly. A
+ * triplet is invalid to v0.8.7's utilities and a hex is invalid to main's, so
+ * the stylesheet has to be emitted in whichever shape the build reads.
+ */
+function detectScheme(dist) {
+  try {
+    for (const file of readdirSync(join(dist, 'assets'))) {
+      if (!file.endsWith('.css')) continue;
+      const css = readFileSync(join(dist, 'assets', file), 'utf8');
+      if (!css.includes('--surface-primary')) continue;
+      return css.includes('rgb(var(--surface-primary') ? 'rgb' : 'hex';
+    }
+  } catch {
+    /* fall through to the modern default */
+  }
+  return 'rgb';
+}
+
+/** brand.css is authored as triplets; emit it in the build's own format. */
+function writeBrandCss(dist, scheme) {
+  const source = join(HERE, 'brand.css');
+  if (!existsSync(source)) {
+    console.warn('[janet-branding] brand.css missing');
+    return;
+  }
+  let css = readFileSync(source, 'utf8');
+  if (scheme === 'hex') {
+    css = css.replace(
+      TRIPLET,
+      (_match, head, r, g, b, tail) => `${head}#${hex2(r)}${hex2(g)}${hex2(b)}${tail}`,
+    );
+  }
+  writeFileSync(join(dist, 'janet-brand.css'), css);
 }
 
 function patchHtml(dist) {
@@ -131,9 +167,11 @@ function main() {
     return;
   }
   const copied = copyAssets(dist);
+  const scheme = detectScheme(dist);
+  writeBrandCss(dist, scheme);
   patchHtml(dist);
   patchManifest(dist);
-  console.log(`[janet-branding] applied to ${dist} (${copied} assets)`);
+  console.log(`[janet-branding] applied to ${dist} (${copied} assets, ${scheme} tokens)`);
 }
 
 /**
