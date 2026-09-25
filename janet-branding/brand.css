@@ -315,3 +315,22 @@ html.dark .focus\:outline-none:focus {
   outline: 3px solid #1e2c24;
   outline-offset: 1px;
 }
+
+/* Actions. LibreChat paints its primary actions in a hardcoded green-500
+ * (#10a37f) — the same teal as the focus accent — in the shared .btn-primary
+ * class and in per-component `bg-green-500` selections such as the Save As
+ * Preset button. The system's action colour is Forest, so the solid greens map
+ * to it and hover darkens to Forest-400 the way the system's solid controls
+ * do. Translucent green tints are left alone. */
+html .bg-green-500,
+html .hover\:bg-green-500:hover,
+html .focus\:bg-green-500:focus,
+html .btn-primary,
+html .btn-primary:disabled:hover {
+  background-color: #004225;
+}
+html .hover\:bg-green-600:hover,
+html .btn-primary:hover,
+html.dark .dark\:hover\:bg-green-600:hover {
+  background-color: #002b18;
+}
