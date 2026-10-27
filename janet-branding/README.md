@@ -19,11 +19,16 @@ rewrites the _built output_ in place:
   Copies the Janet icons over the stock ones in `client/dist`, injects
   `brand.css` and the brand fonts into `client/dist/index.html`, patches
   `manifest.webmanifest`, and refreshes the pre-compressed `index.html.br/.gz`.
+  The stylesheet link carries a content hash, because the server caches
+  `janet-brand.css` for two days under a fixed name.
   It always exits 0, so a cosmetic failure never keeps the chat from starting.
 - `brand.css` — remaps LibreChat's CSS custom properties onto the Forest &
-  Brass tokens, light and dark. Source of truth is the `preferred-design-system`
-  skill's `tokens/colors.css`.
+  Brass tokens, light and dark, and sets the type. Source of truth is the
+  `preferred-design-system` skill's `tokens/colors.css` and `tokens/typography.css`.
 - `assets/` — the Janet mark, favicons and app icons.
+- `fonts/` — IntoneMono NFM Light (Latin subset) and its OFL licence, copied
+  from the design system. It is not on Google Fonts, so `apply.mjs` copies it
+  into `client/dist/assets`; Space Grotesk loads from Google Fonts.
 
 Nothing under `src/`, `client/src/`, `api/` or the vendor `Dockerfile` is
 touched, so `git rebase`/`git merge` against upstream is always clean.

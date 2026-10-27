@@ -13,6 +13,20 @@
  * document element). Source of truth: preferred-design-system/tokens/colors.css.
  */
 
+/* IntoneMono is not on Google Fonts, so apply.mjs copies the design system's
+ * Latin subset into dist/assets. The URL resolves against this stylesheet,
+ * which apply.mjs writes at the dist root. Source of truth:
+ * preferred-design-system/tokens/typography.css.
+ */
+@font-face {
+  font-family: 'IntoneMono NFM Light';
+  src: local('IntoneMono NFM Light'), local('IntoneMonoNFM-Light'),
+    url('assets/IntoneMonoNFM-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ── Light ─────────────────────────────────────────────────────────────── */
 html {
   /* Text · Mist ink */
@@ -127,7 +141,7 @@ html {
   --theme-motion-fast: 120ms;
   --theme-motion-normal: 200ms;
   --theme-elevation-surface: 0 1px 2px rgb(31 38 34 / 0.04), 0 2px 8px rgb(31 38 34 / 0.06);
-  --theme-font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --theme-font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ── Dark ──────────────────────────────────────────────────────────────── */
@@ -225,31 +239,30 @@ html.dark {
 }
 
 /* ── Type ──────────────────────────────────────────────────────────────
- * Instrument Sans for body and UI, JetBrains Mono for code, Cormorant
- * Garamond for display at 28px and up (`.text-3xl` is 30px) — and nowhere
- * else. Sentence case, no emoji, no exclamation marks: those are copy rules
- * that ride in the operator strings, not here.
+ * Space Grotesk for display, body and UI, IntoneMono NFM Light for code. Two
+ * families, no more. Display (`.text-3xl` and up) keeps the family and takes
+ * weight 600. Sentence case, no emoji, no exclamation marks: those are copy
+ * rules that ride in the operator strings, not here.
  */
 html,
 html body {
-  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 html .font-sans {
-  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 html pre,
 html code,
 html kbd,
 html samp,
 html .font-mono {
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: 'IntoneMono NFM Light', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 html .text-3xl,
 html .text-4xl,
 html .text-5xl,
 html .text-6xl,
 html .text-7xl {
-  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   font-weight: 600;
   letter-spacing: 0;
 }

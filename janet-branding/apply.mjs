@@ -18,12 +18,12 @@
  */
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const ASSET_DIR = join(HERE, 'assets');
 
 /** Where the built client lives. Render's image has the repo at /app. */
 function resolveDist() {
@@ -34,34 +34,44 @@ function resolveDist() {
   return resolve(HERE, '..', 'client', 'dist');
 }
 
-/** Source in janet-branding/assets → destination under dist/. */
+/** Source under janet-branding/ → destination under dist/. */
 const ASSETS = {
-  'logo.svg': 'assets/logo.svg',
-  'favicon-16x16.png': 'assets/favicon-16x16.png',
-  'favicon-32x32.png': 'assets/favicon-32x32.png',
-  'apple-touch-icon-180x180.png': 'assets/apple-touch-icon-180x180.png',
-  'icon-192x192.png': 'assets/icon-192x192.png',
-  'icon-512x512.png': 'assets/icon-512x512.png',
-  'maskable-icon.png': 'assets/maskable-icon.png',
-  'favicon.ico': 'favicon.ico',
+  'assets/logo.svg': 'assets/logo.svg',
+  'assets/favicon-16x16.png': 'assets/favicon-16x16.png',
+  'assets/favicon-32x32.png': 'assets/favicon-32x32.png',
+  'assets/apple-touch-icon-180x180.png': 'assets/apple-touch-icon-180x180.png',
+  'assets/icon-192x192.png': 'assets/icon-192x192.png',
+  'assets/icon-512x512.png': 'assets/icon-512x512.png',
+  'assets/maskable-icon.png': 'assets/maskable-icon.png',
+  'assets/favicon.ico': 'favicon.ico',
+  // Not on Google Fonts; brand.css points its @font-face here.
+  'fonts/IntoneMonoNFM-Light.woff2': 'assets/IntoneMonoNFM-Light.woff2',
 };
 
 const FONTS = [
   '<link rel="preconnect" href="https://fonts.googleapis.com">',
   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">',
+  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">',
 ].join('\n    ');
 
 const MARKER = '<!-- janet-branding -->';
 
-const HEAD_INJECTION = `${MARKER}
+/**
+ * The server caches janet-brand.css publicly for two days under a fixed name,
+ * so the link carries a content hash: index.html is never cached, and a brand
+ * change reaches every client on its next load instead of after the cache ages.
+ */
+function headInjection(version) {
+  const query = version ? `?v=${version}` : '';
+  return `${MARKER}
     ${FONTS}
-    <link rel="stylesheet" href="janet-brand.css">`;
+    <link rel="stylesheet" href="janet-brand.css${query}">`;
+}
 
 function copyAssets(dist) {
   let copied = 0;
   for (const [source, destination] of Object.entries(ASSETS)) {
-    const from = join(ASSET_DIR, source);
+    const from = join(HERE, source);
     const to = join(dist, destination);
     if (!existsSync(from)) {
       console.warn(`[janet-branding] missing asset ${from}, skipping`);
@@ -98,12 +108,15 @@ function detectScheme(dist) {
   return 'rgb';
 }
 
-/** brand.css is authored as triplets; emit it in the build's own format. */
+/**
+ * brand.css is authored as triplets; emit it in the build's own format.
+ * Returns a short content hash for the link's cache-busting query.
+ */
 function writeBrandCss(dist, scheme) {
   const source = join(HERE, 'brand.css');
   if (!existsSync(source)) {
     console.warn('[janet-branding] brand.css missing');
-    return;
+    return null;
   }
   let css = readFileSync(source, 'utf8');
   if (scheme === 'hex') {
@@ -113,9 +126,10 @@ function writeBrandCss(dist, scheme) {
     );
   }
   writeFileSync(join(dist, 'janet-brand.css'), css);
+  return createHash('sha256').update(css).digest('hex').slice(0, 10);
 }
 
-function patchHtml(dist) {
+function patchHtml(dist, version) {
   const indexPath = join(dist, 'index.html');
   if (!existsSync(indexPath)) {
     console.warn('[janet-branding] no index.html, skipping');
@@ -132,7 +146,7 @@ function patchHtml(dist) {
   html = html.replace(/(<meta name="theme-color" content=")[^"]*(")/, '$1#004225$2');
 
   if (!html.includes(MARKER)) {
-    html = html.replace('</head>', `  ${HEAD_INJECTION}\n  </head>`);
+    html = html.replace('</head>', `  ${headInjection(version)}\n  </head>`);
   }
 
   if (html !== before) {
@@ -168,8 +182,8 @@ function main() {
   }
   const copied = copyAssets(dist);
   const scheme = detectScheme(dist);
-  writeBrandCss(dist, scheme);
-  patchHtml(dist);
+  const version = writeBrandCss(dist, scheme);
+  patchHtml(dist, version);
   patchManifest(dist);
   console.log(`[janet-branding] applied to ${dist} (${copied} assets, ${scheme} tokens)`);
 }
